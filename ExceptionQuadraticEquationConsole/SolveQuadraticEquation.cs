@@ -16,6 +16,14 @@ namespace ExceptionQuadraticEquationConsole
             public InvalideInputException(string message) : base(message)
             { }
         }
+
+        private class DiscriminantBelowZero : Exception
+        {
+            public DiscriminantBelowZero() : base()
+            { }
+            public DiscriminantBelowZero(string message) : base(message)
+            { }
+        }
         private int a, b, c, d;
         private enum Severity
         {
@@ -39,9 +47,7 @@ namespace ExceptionQuadraticEquationConsole
             this.a = a;
             this.b = b;
             this.c = c;
-
         }
-
         private bool FillCoefficient()
         {
             Console.WriteLine("Please input the value of coefficient a:");
@@ -72,7 +78,11 @@ namespace ExceptionQuadraticEquationConsole
                 FormatData(ex.Message, Severity.Error, ex.Data);
                 return false;
             }
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             return true;
         }
         private void FormatData(string message, Severity severity, IDictionary data)
@@ -105,35 +115,50 @@ namespace ExceptionQuadraticEquationConsole
                 Console.BackgroundColor = ConsoleColor.Yellow;
                 Console.ForegroundColor = ConsoleColor.Black;
 
+                Console.WriteLine("--------------------------------------------------");//50 char
+                Console.WriteLine(message);
+                Console.WriteLine("--------------------------------------------------");//50 char
+
+                foreach (DictionaryEntry item in data)
+                {
+                    Console.WriteLine(item.Key + "  = " + item.Value);
+                }
 
                 Console.BackgroundColor = tempConsoleBackgroundColor;
                 Console.ForegroundColor = tempConsoleForegroundColor;
             }
-
-
-
         }
 
         public void Solve()
         {
-            d = (b * b) - 4 * a * c;
-            if (d > 0)
+            try
             {
-                double x1, x2;
-                x1 = (-b + Math.Sqrt(d)) / 2 / a;
-                x2 = (-b - Math.Sqrt(d)) / 2 / a;
-                Console.WriteLine("x1 = " + x1 + " x2 = " + x2);
+                d = (b * b) - 4 * a * c;
+                if (d > 0)
+                {
+                    double x1, x2;
+                    x1 = (-b + Math.Sqrt(d)) / 2 / a;
+                    x2 = (-b - Math.Sqrt(d)) / 2 / a;
+                    Console.WriteLine("x1 = " + x1 + " x2 = " + x2);
+                }
+                else if (d == 0)
+                {
+                    double x = -b / 2 / a;
+                    Console.WriteLine("x = " + x);
+                }
+                else
+                {
+                    throw new DiscriminantBelowZero("Вещественных значений не найдено");
+                }
             }
-            else if (d == 0)
+            catch (DiscriminantBelowZero ex)
             {
-                double x = -b / 2 / a;
-                Console.WriteLine("x = " + x);
+                FormatData(ex.Message, Severity.Warning, ex.Data);
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception("Вещественных значений не найдено");
+                Console.WriteLine(ex.Message);
             }
-
         }
 
         public void ShowEquation()
