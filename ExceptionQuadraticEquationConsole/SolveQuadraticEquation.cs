@@ -31,7 +31,7 @@ namespace ExceptionQuadraticEquationConsole
             Error
         }
 
-        public SolveQuadraticEquation()
+        public SolveQuadraticEquation()//Конструктор для основной задачи
         {
             Console.WriteLine("a * x^2 + b * x + c = 0");
             bool correctFill = false;
@@ -42,7 +42,7 @@ namespace ExceptionQuadraticEquationConsole
             while (!correctFill);
             ShowEquation();
         }
-        public SolveQuadraticEquation(int a, int b, int c)
+        public SolveQuadraticEquation(int a, int b, int c)//Конструктор для работы через меню
         {
             this.a = a;
             this.b = b;
