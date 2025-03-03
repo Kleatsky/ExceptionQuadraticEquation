@@ -18,13 +18,37 @@ namespace ExceptionQuadraticEquationConsole
             cursorPosition.y = 0;
             ShowMenu();
             Interaction();
+
+            int.TryParse(coefficients[0], out a);
+            int.TryParse(coefficients[1], out b);
+            int.TryParse(coefficients[2], out c);
             return (a, b, c);
         }
         private static void ShowMenu()
         {
             Console.CursorVisible = false;
             Console.Clear();
-            Console.WriteLine("a * x ^ 2 + b * x + c = 0\n");
+            if (!string.IsNullOrEmpty(coefficients[0])) Console.Write(coefficients[0] + " * x^2");
+            else Console.Write("a * x^2");
+            if (!string.IsNullOrEmpty(coefficients[1]))
+            {
+                if (coefficients[1][0] != '-')
+                    Console.Write(" + " + coefficients[1] + " * x");
+                else
+                    Console.Write(" - " + coefficients[1].Substring(1) + " * x");
+            }
+            else Console.Write(" + a * x");
+            if (!string.IsNullOrEmpty(coefficients[2]))
+            {
+                if (coefficients[2][0] != '-')
+                    Console.Write(" + " + coefficients[2] + " = 0\n\n");
+                else
+                    Console.Write(" - " + coefficients[2].Substring(1) + " = 0\n\n");
+            }
+            else Console.Write(" + c = 0\n\n");
+
+
+
             if (cursorPosition.y == 0) Console.Write(">a: ");
             else Console.Write(" a: ");
             if (coefficients[0] != null) Console.Write(coefficients[0]);
@@ -39,7 +63,7 @@ namespace ExceptionQuadraticEquationConsole
             else Console.Write(" c: ");
             if (coefficients[2] != null) Console.Write(coefficients[2]);
             Console.WriteLine();
-            int offset = string.IsNullOrEmpty(coefficients[cursorPosition.y]) ? 0: coefficients[cursorPosition.y].Length;
+            int offset = string.IsNullOrEmpty(coefficients[cursorPosition.y]) ? 0 : coefficients[cursorPosition.y].Length;
             Console.SetCursorPosition(cursorPosition.x + offset, cursorPosition.y + 2);
         }
 
