@@ -65,10 +65,10 @@ namespace ExceptionQuadraticEquationConsole
                 if (a == 0) throw new InvalideInputException("Coefficient a can't be 0!");
 
                 correctInput = int.TryParse(tempCoefficientB, out b);
-                if (!correctInput) Console.WriteLine(tempCoefficientB + " is not a number!");
+                if (!correctInput) throw new InvalideInputException(tempCoefficientB + " is not a number!");
 
                 correctInput = int.TryParse(tempCoefficientC, out c);
-                if (!correctInput) Console.WriteLine(tempCoefficientC + " is not a number!");
+                if (!correctInput) throw new InvalideInputException(tempCoefficientC + " is not a number!");
             }
             catch (InvalideInputException ex)
             {
